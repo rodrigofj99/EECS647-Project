@@ -8,5 +8,5 @@ $dbConnection = OpenCon();
 $stmt = $dbConnection->prepare("INSERT INTO user(UID,Name,Password) values(4,'$name','$password')");
 $stmt->execute();
 echo"Inserted!";
-
+CloseCon($dbConnection);
 ?>

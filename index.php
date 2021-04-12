@@ -258,9 +258,32 @@ footer a {
 </head>
 
 <body>
-
 	<?php
-	echo "Works";
+	$message = "";
+		include 'db_connect.php';
+		$dbConnection = OpenCon();
+		if(isset($_POST['signin_button']))
+		{
+			$email = $_POST['email'];
+			$password = $_POST['password'];
+			$stmt = $dbConnection->prepare("SELECT Email,Password FROM user WHERE Email = '$email' and Password = '$password'");
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$val = $result->fetch_row();
+			if(!$val)
+			{
+				echo "Wrong email or password";
+			}else
+			{
+				echo '<script type="text/javascript">
+				location.replace("profile.html");
+			  </script>';
+				exit();
+				//echo"Yei";
+			}
+
+		}
+		CloseCon($dbConnection);
 	?>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
@@ -269,16 +292,16 @@ footer a {
 			<input type="text" name="name" required placeholder="Name" />
 			<input type="email" name="email" placeholder="Email" />
 			<input type="password" name="password" placeholder="Password" />
-			<button type="submit" id="signup_button">Sign Up</button>
+			<button type="submit" name="signup_button">Sign Up</button>
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form name="signup" action="create_user.php" method="post">
+		<form name="signin" action="" method="post">
 			<h1>Sign in</h1>
-			<input type="email" id="email" placeholder="Email" />
-			<input type="password" id="password" placeholder="Password" />
+			<input type="email" name="email" placeholder="Email" />
+			<input type="password" name="password" placeholder="Password" />
 			<a href="#">Forgot your password?</a>
-			<button type="submit" id="signup_button">Sign In</button>
+			<button type="submit" name="signin_button">Sign In</button>
 		</form>
 	</div>
 	<div class="overlay-container">
