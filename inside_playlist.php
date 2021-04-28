@@ -82,13 +82,8 @@ input.invisible {visibility:hidden;}
 </head>
 <body>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-  <button onclick="goBack()">Go back</button>
+  <button onclick="window.location.href='profile.php'">Go back</button>
 
-  <script>
-  function goBack() {
-    window.history.back();
-  }
-  </script>
 
   <?php
   include 'db_connect.php';
