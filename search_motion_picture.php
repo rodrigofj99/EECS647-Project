@@ -97,18 +97,18 @@ text-decoration:none;
     <br/>
 	<div class="row justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
-                            <form class="card card-sm">
+                            <form class="card card-sm" action="" method="post">
                                 <div class="card-body row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <!--end of col-->
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search for movies or tv shows">
+                                        <input class="form-control form-control-lg form-control-borderless" name="search" type="search" placeholder="Search for movies or tv shows">
                                     </div>
                                     <!--end of col-->
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" name="search_motion_picture" type="submit">Search</button>
                                     </div>
                                     <!--end of col-->
                                 </div>
@@ -121,6 +121,7 @@ text-decoration:none;
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
+$pid = 1; //TODO change hardcoded value
 
 if(isset($_POST['AddToPlaylist']))
 {
@@ -130,26 +131,101 @@ if(isset($_POST['AddToPlaylist']))
 //  $stmt->execute();
 }
 
-
-//TODO change hardcoded value
-$pid = 1;
-
-$stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, movie WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
-$stmt->execute();
-$result = $stmt->get_result();
-$val = $result->fetch_row();
-if(!$val)
+if(isset($_POST['search_motion_picture']))
 {
-  echo "No movies found in this playlist";
-}else
-{
+  $foundMovies = true;
+  $foundShows = true;
+  $motion_picture_name = $_POST['search'];
+  $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM motionpicture, motionpicturecountry, movie WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $val = $result->fetch_row();
+  if(!$val)
+  {
+    $foundMovies = false;
+  }else
+  {
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result -> fetch_row())
+    {
+  echo '
+  <hr>
+  <div class="container bootstrap snippets bootdey">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>Name</span></th>
+                                <th><span>Country</span></th>
+                                <th><span>Duration</span></th>
+                                <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>';
+                                          echo($row[0]);
+                                          echo '
+                                    </td>
+                                    <td>';
+                                    echo($row[1]);
+                                    echo '
+                                    </td>
+                                    <td>';
+                                    echo($row[2]);
+                                    echo '
+                                    </td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td style="width: 20%;">
+                                    <form name="add_mp" action="" method="post">
+                                      <input type="text" class="invisible" name="mid" value =';
+                                       echo($row[3]);
+                                      echo '>
+                                      </input>
+                                    <a class="table-link danger">
+                                    <button type="submit" name="AddToPlaylist">
+                                            <span class="fa-stack">
+                                                Add
+                                            </span>
+                                      </button>
+                                      </a>
+                                    </form>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>';
+  }
+  }
+  $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM motionpicture, motionpicturecountry, shows WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $val = $result->fetch_row();
+  if(!$val)
+  {
+  $foundShows = false;
+  }else
+  {
   $stmt->execute();
   $result = $stmt->get_result();
   while ($row = $result -> fetch_row())
   {
-echo '
-<hr>
-<div class="container bootstrap snippets bootdey">
+  echo '
+  <hr>
+  <div class="container bootstrap snippets bootdey">
   <div class="row">
       <div class="col-lg-12">
           <div class="main-box no-header clearfix">
@@ -160,7 +236,8 @@ echo '
                               <tr>
                               <th><span>Name</span></th>
                               <th><span>Country</span></th>
-                              <th><span>Duration</span></th>
+                              <th><span>Seasons</span></th>
+                              <th><span>Episodes</span></th>
                               <th>&nbsp;</th>
                               </tr>
                           </thead>
@@ -178,13 +255,14 @@ echo '
                                   echo($row[2]);
                                   echo '
                                   </td>
-                                  </td>
-                                  <td>
+                                  <td>';
+                                  echo($row[3]);
+                                  echo '
                                   </td>
                                   <td style="width: 20%;">
                                   <form name="add_mp" action="" method="post">
                                     <input type="text" class="invisible" name="mid" value =';
-                                     echo($row[3]);
+                                     echo($row[4]);
                                     echo '>
                                     </input>
                                   <a class="table-link danger">
@@ -205,89 +283,16 @@ echo '
           </div>
       </div>
   </div>
-</div>';
+  </div>';
+  }
+  }
+if(!$foundShows && !$foundMovies)
+{
+echo("Sorry, we couldn't find anything related. Try to search for another movie or show");
 }
-}
-?>
-<?php
-//$pid = $_POST['playlistID'];
-$pid = 1;
-$stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, shows WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
-$stmt->execute();
-$result = $stmt->get_result();
-$val = $result->fetch_row();
-if(!$val)
-{
-echo "No tv shows found in this playlist";
-}else
-{
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result -> fetch_row())
-{
-echo '
-<hr>
-<div class="container bootstrap snippets bootdey">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="main-box no-header clearfix">
-            <div class="main-box-body clearfix">
-                <div class="table-responsive">
-                    <table class="table user-list">
-                        <thead>
-                            <tr>
-                            <th><span>Name</span></th>
-                            <th><span>Country</span></th>
-                            <th><span>Seasons</span></th>
-                            <th><span>Episodes</span></th>
-                            <th>&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>';
-                                      echo($row[0]);
-                                      echo '
-                                </td>
-                                <td>';
-                                echo($row[1]);
-                                echo '
-                                </td>
-                                <td>';
-                                echo($row[2]);
-                                echo '
-                                </td>
-                                <td>';
-                                echo($row[3]);
-                                echo '
-                                </td>
-                                <td style="width: 20%;">
-                                <form name="add_mp" action="" method="post">
-                                  <input type="text" class="invisible" name="mid" value =';
-                                   echo($row[4]);
-                                  echo '>
-                                  </input>
-                                <a class="table-link danger">
-                                <button type="submit" name="AddToPlaylist">
-                                        <span class="fa-stack">
-                                            Add
-                                        </span>
-                                  </button>
-                                  </a>
-                                </form>
-                                </td>
-                            </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>';
 }
-}
+
 CloseCon($dbConnection);
 ?>
 
