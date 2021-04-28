@@ -276,7 +276,7 @@ footer a {
 			}else
 			{
 				echo '<script type="text/javascript">
-				location.replace("profile.html");
+				location.replace("profile.php");
 			  </script>';
 				exit();
 				//echo"Yei";
