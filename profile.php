@@ -166,10 +166,6 @@
       }
     });
 
-    document.getElementById("create").addEventListener("click", function() {
-      
-    });
-
     //Load Playlists
     let xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -230,17 +226,17 @@
   <div class="modal-body">
   <h3 class="text-center">New Playlist</h3>
     <div class="col" style="padding-left:30%; padding-right:25%">
-      <form action="#">
+      <form action="newPlaylist.php" name="newPlaylist" method="post">
         
         <div class="row pb-2">
-          <input type="text" placeholder="Name" />
+          <input type="text" placeholder="Name" name="name" require/>
         </div>
         <div>
           <label>Select friend(s)</label>
-          <select name="friends" id="friendsList" multiple></select>
+          <select name="friends[]" id="friendsList" multiple="multiple"></select>
         </div>
         <div class="row pt-3">
-          <button id="create">Create</button>
+          <button type="submit" name="create_button">Create</button>
         </div>
         
       </form>
