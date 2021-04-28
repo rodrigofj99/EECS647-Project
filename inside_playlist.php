@@ -75,6 +75,8 @@ a {
 a:hover{
 text-decoration:none;
 }
+
+input.invisible {visibility:hidden;}
     </style>
 </head>
 <body>
@@ -89,11 +91,21 @@ text-decoration:none;
 
   <?php
   include 'db_connect.php';
-  //$pid = $_POST['playlistID'];
+  $dbConnection = OpenCon();
+
+  if(isset($_POST['deleteMotionPicture']))
+  {
+    $movieID = $_POST['mid'];
+    //echo($movieID);
+    $stmt = $dbConnection->prepare("DELETE FROM playlisthasmotionpicture WHERE MID = $movieID");
+    $stmt->execute();
+  }
+
+
   //TODO change hardcoded value
   $pid = 1;
-  $dbConnection = OpenCon();
-  $stmt = $dbConnection->prepare("SELECT Name, Country, Duration FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, movie WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
+
+  $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, movie WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
   $stmt->execute();
   $result = $stmt->get_result();
   $val = $result->fetch_row();
@@ -125,11 +137,9 @@ text-decoration:none;
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <a href="#" class="user-link">';
+                                    <td>';
                                           echo($row[0]);
                                           echo '
-                                        </a>
                                     </td>
                                     <td>';
                                     echo($row[1]);
@@ -143,12 +153,20 @@ text-decoration:none;
                                     <td>
                                     </td>
                                     <td style="width: 20%;">
-                                        <a href="#" class="table-link danger">
+                                    <form name="delete_mp" action="" method="post">
+                                      <input type="text" class="invisible" name="mid" value =';
+                                       echo($row[3]);
+                                      echo '>
+                                      </input>
+                                    <a class="table-link danger">
+                                    <button type="submit" name="deleteMotionPicture">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                             </span>
-                                        </a>
+                                      </button>
+                                      </a>
+                                    </form>
                                     </td>
                                 </tr>
 
@@ -166,7 +184,7 @@ text-decoration:none;
 <?php
 //$pid = $_POST['playlistID'];
 $pid = 1;
-$stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, shows WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
+$stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, shows WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
 $stmt->execute();
 $result = $stmt->get_result();
 $val = $result->fetch_row();
@@ -199,11 +217,9 @@ echo '
                           </thead>
                           <tbody>
                               <tr>
-                                  <td>
-                                      <a href="#" class="user-link">';
+                                  <td>';
                                         echo($row[0]);
                                         echo '
-                                      </a>
                                   </td>
                                   <td>';
                                   echo($row[1]);
@@ -218,12 +234,20 @@ echo '
                                   echo '
                                   </td>
                                   <td style="width: 20%;">
-                                      <a href="#" class="table-link danger">
+                                  <form name="delete_mp" action="" method="post">
+                                    <input type="text" class="invisible" name="mid" value =';
+                                     echo($row[4]);
+                                    echo '>
+                                    </input>
+                                  <a class="table-link danger">
+                                  <button type="submit" name="deleteMotionPicture">
                                           <span class="fa-stack">
                                               <i class="fa fa-square fa-stack-2x"></i>
                                               <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
                                           </span>
-                                      </a>
+                                    </button>
+                                    </a>
+                                  </form>
                                   </td>
                               </tr>
 
