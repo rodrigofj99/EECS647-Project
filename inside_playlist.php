@@ -6,10 +6,17 @@
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>table user list - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-    	body{
-    background:#eee;
+
+  body{
+  margin-top:20px;
+  color: #1a202c;
+  text-align: left;
+  background-color: #e2e8f0;
+}
+.main-body {
+  padding: 15px;
 }
 .main-box.no-header {
     padding-top: 20px;
@@ -76,14 +83,30 @@ a {
 a:hover{
 text-decoration:none;
 }
+.main-body {
+    padding: 15px;
+}
 
 input.invisible {visibility:hidden;}
     </style>
 </head>
 <body>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-  <button onclick="window.location.href='profile.php'">Go back</button>
 
+
+  <div class="container">
+      <div class="main-body">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="main-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+      <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+    </ol>
+  </nav>
+  <!-- /Breadcrumb -->
+</div>
+</div>
 
   <?php
   include 'db_connect.php';
