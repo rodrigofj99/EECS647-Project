@@ -126,9 +126,8 @@ $pid = 1; //TODO change hardcoded value
 if(isset($_POST['AddToPlaylist']))
 {
   $movieID = $_POST['mid'];
-  //echo($movieID);
-//  $stmt = $dbConnection->prepare("DELETE FROM playlisthasmotionpicture WHERE MID = $movieID");
-//  $stmt->execute();
+  $stmt = $dbConnection->prepare("INSERT INTO playlisthasmotionpicture(PID,MID) values('$pid','$movieID')");
+  $stmt->execute();
 }
 
 if(isset($_POST['search_motion_picture']))
