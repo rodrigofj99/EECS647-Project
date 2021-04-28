@@ -11,7 +11,13 @@
     <style type="text/css">
 
     body{
-  background:#eee;
+  margin-top:20px;
+  color: #1a202c;
+  text-align: left;
+  background-color: #e2e8f0;
+}
+.main-body {
+  padding: 15px;
 }
 .main-box.no-header {
   padding-top: 20px;
@@ -94,9 +100,19 @@ text-decoration:none;
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
-    <button onclick="window.location.href='inside_playlist.php'">
-      Go back to playlist
-    </button>
+    <div class="container">
+        <div class="main-body">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="profile.php">User Profile</a></li>
+        <li class="breadcrumb-item"><a href="inside_playlist.php">User Playlist</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add to Playlist</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+  </div>
+  </div>
 
 <div class="container">
     <br/>

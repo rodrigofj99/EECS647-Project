@@ -281,7 +281,11 @@ echo '
 }
 CloseCon($dbConnection);
 ?>
-<button onclick="window.location.href='search_motion_picture.php'">Add a movie or tv show</button> //TODO add functionality to send playlist ID
+<div class="container">
+    <div class="main-body">
+<button onclick="window.location.href='search_motion_picture.php'">Add a movie or tv show to this playlist</button>
+</div>
+</div>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
