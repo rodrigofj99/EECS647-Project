@@ -65,6 +65,7 @@ a {
 .table tbody tr td:first-child {
     font-size: 1.125em;
     font-weight: 300;
+    width: 350px;
 }
 .table tbody tr td {
     font-size: 0.875em;
