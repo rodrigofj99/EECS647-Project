@@ -262,32 +262,40 @@ footer a {
 	$message = "";
 		include 'db_connect.php';
 		$dbConnection = OpenCon();
-		if(isset($_POST['signin_button']))
-		{
-			$email = $_POST['email'];
-			$password = $_POST['password'];
-			$stmt = $dbConnection->prepare("SELECT Email,Password FROM user WHERE Email = '$email' and Password = '$password'");
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$val = $result->fetch_row();
-			if(!$val)
+			if(isset($_POST['signin_button'])) //call when button sigin is pressed
 			{
-				echo "Wrong email or password";
-			}else
-			{
-				echo '<script type="text/javascript">
-				location.replace("profile.php");
-			  </script>';
-				exit();
-				//echo"Yei";
+				$email = $_POST['email'];
+				$password = $_POST['password'];
+				$stmt = $dbConnection->prepare("SELECT Email,Password FROM user WHERE Email = '$email' and Password = '$password'");
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$val = $result->fetch_row();
+				if(!$val)
+				{
+					echo "Wrong email or password";
+				}else
+				{
+					echo '<script type="text/javascript">
+					location.replace("profile.php");
+				  </script>';
+					exit();
+				}
 			}
 
-		}
-		CloseCon($dbConnection);
+			if(isset($_POST['signup_button'])) //call when button signup is pressed
+			{
+				$name = $_POST['name'];
+				$email = $_POST['email'];
+				$password = $_POST['password'];
+				$stmt = $dbConnection->prepare("INSERT INTO user(Name,Email,Password) values('$name','$email','$password')");
+				$stmt->execute();
+			}
+
+			CloseCon($dbConnection);
 	?>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-		<form name="signup" action="create_user.php"  method="post">
+		<form name="signup" action=""  method="post">
 			<h1>Create Account</h1>
 			<input type="text" name="name" required placeholder="Name" />
 			<input type="email" name="email" placeholder="Email" />
