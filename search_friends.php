@@ -90,7 +90,7 @@ img.profile-photo-lg{
                                     </div>
                                     <!--end of col-->
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" name="search_motion_picture" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" name="search_friends" type="submit">Search</button>
                                     </div>
                                     <!--end of col-->
                                 </div>
@@ -103,27 +103,25 @@ img.profile-photo-lg{
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
-$pid = 1; //TODO change hardcoded value
+$uid = 1; //TODO change hardcoded value
 
-if(isset($_POST['AddToPlaylist']))
+if(isset($_POST['AddAsFriend']))
 {
-  $movieID = $_POST['mid'];
-  $stmt = $dbConnection->prepare("INSERT INTO playlisthasmotionpicture(PID,MID) values('$pid','$movieID')");
-  $stmt->execute();
+  $friendUID = $_POST['friendUID'];
+  //$stmt = $dbConnection->prepare("INSERT INTO playlisthasmotionpicture(PID,MID) values('$pid','$movieID')");
+//  $stmt->execute();
 }
 
-if(isset($_POST['search_motion_picture']))
+if(isset($_POST['search_friends']))
 {
-  $foundMovies = true;
-  $foundShows = true;
-  $motion_picture_name = $_POST['search'];
-  $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM motionpicture, motionpicturecountry, movie WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
+  $user_name = $_POST['search'];
+  $stmt = $dbConnection->prepare("SELECT Name, UID FROM user WHERE Name LIKE '%$user_name%' AND UID <> '$uid'"); //looks up all users with that name but not yourself
   $stmt->execute();
   $result = $stmt->get_result();
   $val = $result->fetch_row();
   if(!$val)
   {
-    $foundMovies = false;
+    echo("There is no users with that name");
   }else
   {
     $stmt->execute();
@@ -143,7 +141,10 @@ if(isset($_POST['search_motion_picture']))
                       <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
                     </div>
                     <div class="col-md-7 col-sm-7">
-                      <h5><a href="#" class="profile-link">Sophia Page</a></h5>
+                      <h5><a href="#" class="profile-link">';
+                      echo($row[0]);
+                      echo '
+                      </a></h5>
                     </div>
                     <div class="col-md-3 col-sm-3">
                       <button class="btn btn-primary pull-right">Add Friend</button>
@@ -155,10 +156,6 @@ if(isset($_POST['search_motion_picture']))
       	</div>
   </div>';
   }
-if(!$foundShows && !$foundMovies)
-{
-echo("Sorry, we couldn't find anything related. Try to search for another movie or show");
-}
 
 }
 }
