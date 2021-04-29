@@ -8,8 +8,8 @@
     $result = $stmt->get_result();
     while($val = $result->fetch_row())
     {
-        echo '<div class="row" style="text-align: center">';
-        echo '<span>'.($val[0]).'</span>';
+        echo '<div style="text-align: center" class="pb-2">';
+        echo '<a class="btn btn-outline-primary">'.($val[0]).'</a>';
         echo '</div>';
     }
 ?>

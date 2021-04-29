@@ -160,6 +160,10 @@
       document.getElementById("myModal").style.display = "none";
     });
 
+    document.getElementById("findFriends").addEventListener("click", function() {
+      location.replace("search_friends.php");
+    });
+
     window.addEventListener("click", function(event) {
       if (event.target == modal) {
         document.getElementById("myModal").style.display = "none";
@@ -168,13 +172,14 @@
 
     let uid = "1";
     //Load Playlists
-    let playlist_xhttp = new XMLHttpRequest();
+    /*let playlist_xhttp = new XMLHttpRequest();
     playlist_xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         document.getElementById("playlists").innerHTML += this.responseText;
       }};
       playlist_xhttp.open("GET", "getPlaylist.php?q="+uid, true);
-      playlist_xhttp.send();
+      playlist_xhttp.send();*/
+      //location.reload();
 
     //Load friends
     let friends_xhttp = new XMLHttpRequest();
@@ -184,10 +189,16 @@
       }};
       friends_xhttp.open("GET", "getFriends.php?q="+uid, true);
       friends_xhttp.send();
+      
 
+    /*document.getElementById("getPlaylist").addEventListener("load", function() {
+      if(document.body.contains(document.getElementById('playlistForm'))){
+        document.getElementById("playlistForm").submit();
+        document.getElementById("playlistForm").remove();
+      }
+    //});*/
   });
 </script>
-
 
 
 <div class="container">
@@ -298,8 +309,9 @@
                   </div>
                   <hr>
                   <div style="text-align: center">
-                    <h4>Friends</h4>
+                    <h4>Friends List</h4>
                     <div id="friends"></div>
+                    <button class="btn btn-primary" id="findFriends">Find friends</button>
                   </div>
                 </div>
               </div>
@@ -331,7 +343,38 @@
                                 <th><span>Status</span></th>
                               </tr>
                             </thead>
-                            <tbody id="playlists"></tbody>
+                            <tbody id="playlists">
+                              <form action="inside_playlist.php" method="post" id="insidePlaylist">
+                                <input type="text" class="invisible" name="q" id="inside"></input>
+                              </form>
+                              <?php
+                                $dbConnection = OpenCon();
+                                $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in 
+                                (SELECT PID FROM userhasplaylist WHERE UID=1)");
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+                                while($val = $result->fetch_row())
+                                {
+                                    echo '<tr>';
+                                    echo '<td><a class="btn btn-outline-primary" name="playlist_button" id=';
+                                    echo ($val[2]);
+                                    echo '>'.($val[0]).'</a></td>';
+                                    echo '<td>'.($val[1]).'</td>';
+                                    echo '<td class=text-center><span class=label label-default>New</span></td>';
+                                    echo '</tr>';
+                                }
+                                echo '<script type="text/javascript">';
+                                echo 'let playlist_button = document.getElementsByName("playlist_button");
+                                      for (let i = 0; i < playlist_button.length; i++) {
+                                        playlist_button[i].addEventListener("click", function() {
+                                          document.getElementById("inside").value = this.id;
+                                          document.getElementById("insidePlaylist").submit();
+                                        });
+                                      }';
+                                echo '</script>';
+                                CloseCon($dbConnection);
+                          ?>
+</tbody>
                         </table>
                     </div>
                 </div>
