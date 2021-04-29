@@ -251,7 +251,9 @@ session_start();
         <div class="row pt-3">
           <button type="submit" name="create_button">Create</button>
         </div>
-        <input type="text" class="invisible" name="uid" value="1"></input>
+          <?php 
+            echo '<input type="text" class="invisible" name="uid" value="'.($userID).'"></input>';
+          ?>
       </form>
     </div>
   </div>
@@ -356,7 +358,7 @@ session_start();
                               <?php
                                 $dbConnection = OpenCon();
                                 $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in 
-                                (SELECT PID FROM userhasplaylist WHERE UID=1)");
+                                (SELECT PID FROM userhasplaylist WHERE UID=$userID)");
                                 $stmt->execute();
                                 $result = $stmt->get_result();
                                 while($val = $result->fetch_row())
