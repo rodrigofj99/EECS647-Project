@@ -145,12 +145,9 @@ session_start();
 </head>
 <body>
   <?php
-  $userID = $_SESSION['UID'];
-  echo '<p id="UserID">';
-    echo($userID);
-  echo '
-  </p>';
-   ?>
+    $userID = $_SESSION['UID'];
+    echo '<p id="UserID"></p>';
+  ?>
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
 
@@ -180,33 +177,6 @@ session_start();
         document.getElementById("myModal").style.display = "none";
       }
     });
-
-    //Load Playlists
-    /*let playlist_xhttp = new XMLHttpRequest();
-    playlist_xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("playlists").innerHTML += this.responseText;
-      }};
-      playlist_xhttp.open("GET", "getPlaylist.php?q="+uid, true);
-      playlist_xhttp.send();*/
-      //location.reload();
-
-    //Load friends
-    let friends_xhttp = new XMLHttpRequest();
-    friends_xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("friends").innerHTML += this.responseText;
-      }};
-      friends_xhttp.open("GET", "getFriends.php?q="+uid, true);
-      friends_xhttp.send();
-      
-
-    /*document.getElementById("getPlaylist").addEventListener("load", function() {
-      if(document.body.contains(document.getElementById('playlistForm'))){
-        document.getElementById("playlistForm").submit();
-        document.getElementById("playlistForm").remove();
-      }
-    //});*/
   });
 </script>
 
@@ -262,7 +232,21 @@ session_start();
         </div>
         <div>
           <label>Select friend(s)</label>
-          <select name="friends[]" id="friendsList" multiple="multiple"></select>
+          <select name="friends[]" id="friendsList" multiple="multiple">
+          <?php
+            $dbConnection = OpenCon(); 
+            $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in 
+            (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            echo '<label type="text">Select a friend</label>';
+            while($val = $result->fetch_row())
+            {
+                echo '<option value="'.($val[0]).'">'.($val[0]).'</option>';
+            }
+            CloseCon($dbConnection);
+          ?>
+          </select>
         </div>
         <div class="row pt-3">
           <button type="submit" name="create_button">Create</button>
@@ -318,7 +302,21 @@ session_start();
                   <hr>
                   <div style="text-align: center">
                     <h4>Friends List</h4>
-                    <div id="friends"></div>
+                    <div id="friends">
+                    <?php
+                        $dbConnection = OpenCon();
+                        $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in 
+                        (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while($val = $result->fetch_row())
+                        {
+                            echo '<div style="text-align: center" class="pb-2">';
+                            echo '<a class="btn btn-outline-primary">'.($val[0]).'</a>';
+                            echo '</div>';
+                        }
+                    ?>
+                    </div>
                     <button class="btn btn-primary" id="findFriends">Find friends</button>
                   </div>
                 </div>
