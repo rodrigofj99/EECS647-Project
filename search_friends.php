@@ -14,7 +14,7 @@
   margin-top:20px;
   color: #1a202c;
   text-align: left;
-  background-color: #B22222;
+  background-color: #f6f5f7;
 }
 .main-body {
   padding: 15px;
@@ -49,6 +49,17 @@ img.profile-photo-lg{
 .form-control-borderless {
     border: none;
 }
+
+.btn-primary {
+    border: none;
+    background: #B22222;
+}
+
+.btn-lg {
+    border: none;
+    background: #B22222;
+}
+
 
 .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
     border: none;
