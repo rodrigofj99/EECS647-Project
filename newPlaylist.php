@@ -6,35 +6,30 @@
 	{
 		$name = $_POST['name'];
 		$friends = $_POST['friends'];
-        $date = getdate();
-        echo '<script language="javascript">';
-        echo 'alert("Hello")';
-        echo 'alert("'.($date).'")';
-        echo '</script>';
-        //$stmt = $dbConnection->prepare("INSERT INTO playlist(Name, Date) VALUES($name, ".($date['year'])."-".($date['mon'])."-".($date['mday']).");");
-		//$stmt->execute();
+        $user = $_POST['uid'];
+        $date = getdate(date("U"));
+        $stmt = $dbConnection->prepare("INSERT INTO playlist(Name, Date) VALUES('$name', '$date[year]-$date[mon]-$date[mday]');");
+		$stmt->execute();
+
+        $stmt = $dbConnection->prepare("SELECT PID FROM playlist WHERE Name='$name'");
+		$stmt->execute();
+        $result = $stmt->get_result();
+        $val = $result->fetch_row();
+        $stmt = $dbConnection->prepare("INSERT INTO userhasplaylist(UID, PID) VALUES($user, $val[0]);");
+        $stmt->execute();
+
         foreach ($friends as $friend) {
-            /*echo '<script language="javascript">';
-            echo 'alert("Hello")';
-            echo '</script>';
-            $stmt = $dbConnection->prepare("INSERT INTO playlist(Name, Date) VALUES($name, ".($date[year])."-".($date[mon])."-".($date[mday]).")");
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$val = $result->fetch_row();
-			/*if(!$val)
-			{
-				echo "Wrong email or password";
-			}else
-			{
-				echo '<script type="text/javascript">
-				location.replace("profile.php");
-			  </script>';
-				exit();
-			}*/
+            $stmt = $dbConnection->prepare("SELECT UID FROM user WHERE Name='$friend'");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $x = $result->fetch_row();
+
+            $stmt = $dbConnection->prepare("INSERT INTO userhasplaylist(UID, PID) VALUES($x[0], $val[0]);");
+            $stmt->execute();
         }
         echo '<script type="text/javascript">
-            location.replace("profile.php");
-            </script>';
+					location.replace("profile.php");
+				  </script>';
 	}
         
     $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in 

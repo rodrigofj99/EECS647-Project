@@ -166,14 +166,24 @@
       }
     });
 
+    let uid = "1";
     //Load Playlists
-    let xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
+    let playlist_xhttp = new XMLHttpRequest();
+    playlist_xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         document.getElementById("playlists").innerHTML += this.responseText;
       }};
-      xhttp.open("GET", "getPlaylist.php?q="+"1", true);
-      xhttp.send();
+      playlist_xhttp.open("GET", "getPlaylist.php?q="+uid, true);
+      playlist_xhttp.send();
+
+    //Load friends
+    let friends_xhttp = new XMLHttpRequest();
+    friends_xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("friends").innerHTML += this.responseText;
+      }};
+      friends_xhttp.open("GET", "getFriends.php?q="+uid, true);
+      friends_xhttp.send();
 
   });
 </script>
@@ -238,7 +248,7 @@
         <div class="row pt-3">
           <button type="submit" name="create_button">Create</button>
         </div>
-        
+        <input type="text" class="invisible" name="uid" value="1"></input>
       </form>
     </div>
   </div>
@@ -287,6 +297,10 @@
                     </div>
                   </div>
                   <hr>
+                  <div style="text-align: center">
+                    <h4>Friends</h4>
+                    <div id="friends"></div>
+                  </div>
                 </div>
               </div>
             </div>

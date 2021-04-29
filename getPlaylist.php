@@ -1,7 +1,6 @@
 <?php
     include 'db_connect.php';
     $dbConnection = OpenCon();
-    //$query = "SELECT Friend2UID FROM user WHERE Friend1UID=?";
     $stmt = $dbConnection->prepare("SELECT Name, Date FROM playlist where PID in 
     (SELECT PID FROM userhasplaylist WHERE UID=?)");
     $stmt->bind_param("s", $_GET['q']);
