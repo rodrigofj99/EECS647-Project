@@ -124,6 +124,8 @@ if(isset($_POST['AddAsFriend']))
   $friendUID = $_POST['friendUID'];
   $stmt = $dbConnection->prepare("INSERT INTO userfriend(Friend1UID,Friend2UID) VALUES($uid,$friendUID)");
   $stmt->execute();
+  $stmt = $dbConnection->prepare("INSERT INTO userfriend(Friend1UID,Friend2UID) VALUES($friendUID,$uid)");
+  $stmt->execute();
   echo("Friend Added");
 }
 
