@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+ ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -12,7 +15,7 @@
     margin-top:20px;
     color: #1a202c;
     text-align: left;
-    background-color: #e2e8f0;    
+    background-color: #e2e8f0;
 }
 .main-body {
     padding: 15px;
@@ -97,7 +100,7 @@
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
+  from {top:-300px; opacity:0}
   to {top:0; opacity:1}
 }
 
@@ -136,14 +139,22 @@
 
 
     </style>
-    
+
 
 
 </head>
 <body>
-
-<script>  
+  <?php
+  $userID = $_SESSION['UID'];
+  echo '<p id="UserID">';
+    echo($userID);
+  echo '
+  </p>';
+   ?>
+<script>
   document.addEventListener("DOMContentLoaded",()=>{
+
+    let uid = document.getElementById("UserID").innerHTML;
 
     document.getElementById("myBtn").addEventListener("click", function() {
       document.getElementById("myModal").style.display = "block";
@@ -152,7 +163,7 @@
       if (this.readyState == 4 && this.status == 200) {
         document.getElementById("friendsList").innerHTML += this.responseText;
       }};
-      xhttp.open("GET", "newPlaylist.php?q="+"1", true);
+      xhttp.open("GET", "newPlaylist.php?q="+uid, true);
       xhttp.send();
     });
 
@@ -166,7 +177,6 @@
       }
     });
 
-    let uid = "1";
     //Load Playlists
     let playlist_xhttp = new XMLHttpRequest();
     playlist_xhttp.onreadystatechange = function() {
@@ -210,20 +220,20 @@
                   <div class="d-flex flex-column align-items-center text-center">
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4> 
-                        <?php 
+                      <h4>
+                        <?php
                           include 'db_connect.php';
                           $dbConnection = OpenCon();
-                          $stmt = $dbConnection->prepare("SELECT Name FROM user WHERE UID=1");
+                          $stmt = $dbConnection->prepare("SELECT Name FROM user WHERE UID= $userID");
                           $stmt->execute();
                           $result = $stmt->get_result();
                           $val = $result->fetch_row();
-                          echo $val[0]; 
+                          echo $val[0];
                         ?>
                       </h4>
                       <button class="btn btn-primary" style="display:none">Follow</button>
                       <button class="btn btn-outline-primary" id="myBtn">Create Playlist</button>
-                      
+
 
                         <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -237,7 +247,7 @@
   <h3 class="text-center">New Playlist</h3>
     <div class="col" style="padding-left:30%; padding-right:25%">
       <form action="newPlaylist.php" name="newPlaylist" method="post">
-        
+
         <div class="row pb-2">
           <input type="text" placeholder="Name" name="name" require/>
         </div>
@@ -270,9 +280,9 @@
                       <h6 class="mb-0">Name</h6>
                     </div>
                     <div class="col-sm-8 text-secondary">
-                        <?php 
+                        <?php
                           $dbConnection = OpenCon();
-                          $stmt = $dbConnection->prepare("SELECT Name FROM user WHERE UID=1");
+                          $stmt = $dbConnection->prepare("SELECT Name FROM user WHERE UID= $userID");
                           $stmt->execute();
                           $result = $stmt->get_result();
                           $val = $result->fetch_row();
@@ -288,7 +298,7 @@
                     <div class="col-sm-9 text-secondary">
                       <?php
                           $dbConnection = OpenCon();
-                          $stmt = $dbConnection->prepare("SELECT Email FROM user WHERE UID=1");
+                          $stmt = $dbConnection->prepare("SELECT Email FROM user WHERE UID= $userID");
                           $stmt->execute();
                           $result = $stmt->get_result();
                           $val = $result->fetch_row();

@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+ ?>
 <html>
 <head>
 <style type="text/css">
@@ -266,7 +269,7 @@ footer a {
 			{
 				$email = $_POST['email'];
 				$password = $_POST['password'];
-				$stmt = $dbConnection->prepare("SELECT Email,Password FROM user WHERE Email = '$email' and Password = '$password'");
+				$stmt = $dbConnection->prepare("SELECT Email,Password,UID FROM user WHERE Email = '$email' and Password = '$password'");
 				$stmt->execute();
 				$result = $stmt->get_result();
 				$val = $result->fetch_row();
@@ -275,10 +278,21 @@ footer a {
 					echo "Wrong email or password";
 				}else
 				{
+					$userID = $val[2];
+					echo($userID);
+					//setcookie("UID",$userID);
+
+					$_SESSION['UID'] = $userID;
 					echo '<script type="text/javascript">
 					location.replace("profile.php");
-				  </script>';
+				 </script>';
 					exit();
+			//	echo '
+			//		<form name="signup" action="setCookie.php"  method="post">
+			//		<input type="email" name="UID" value =';
+			//		echo($val[2]);
+			//		/>'
+			//		</form>';
 				}
 			}
 
