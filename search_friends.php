@@ -67,8 +67,7 @@ img.profile-photo-lg{
     <nav aria-label="breadcrumb" class="main-breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="profile.php">User Profile</a></li>
-        <li class="breadcrumb-item"><a href="inside_playlist.php">User Playlist</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Add to Playlist</li>
+        <li class="breadcrumb-item active" aria-current="page">Search for Friend</li>
       </ol>
     </nav>
     <!-- /Breadcrumb -->
@@ -108,8 +107,9 @@ $uid = 1; //TODO change hardcoded value
 if(isset($_POST['AddAsFriend']))
 {
   $friendUID = $_POST['friendUID'];
-  //$stmt = $dbConnection->prepare("INSERT INTO playlisthasmotionpicture(PID,MID) values('$pid','$movieID')");
-//  $stmt->execute();
+  $stmt = $dbConnection->prepare("INSERT INTO userfriend(Friend1UID,Friend2UID) VALUES($uid,$friendUID)");
+  $stmt->execute();
+  echo("Friend Added");
 }
 
 if(isset($_POST['search_friends']))
@@ -141,13 +141,19 @@ if(isset($_POST['search_friends']))
                       <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
                     </div>
                     <div class="col-md-7 col-sm-7">
-                      <h5><a href="#" class="profile-link">';
+                      <h5>';
                       echo($row[0]);
                       echo '
-                      </a></h5>
+                      </h5>
                     </div>
                     <div class="col-md-3 col-sm-3">
-                      <button class="btn btn-primary pull-right">Add Friend</button>
+                    <form name="add_friend" action="" method="post">
+                    <input type="text" class="invisible" name="friendUID" value =';
+                     echo($row[1]);
+                    echo '>
+                    </input>
+                      <button type="submit" class="btn btn-primary pull-right" name="AddAsFriend" >Add Friend</button>
+                      </form>
                     </div>
                   </div>
                 </div>
