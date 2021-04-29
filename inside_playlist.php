@@ -121,7 +121,7 @@ input.invisible {visibility:hidden;}
 
 
   //TODO change hardcoded value
-  $pid = 1;
+  $pid = $_POST['q'];
 
   $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, movie WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
   $stmt->execute();
@@ -201,7 +201,7 @@ input.invisible {visibility:hidden;}
 ?>
 <?php
 //$pid = $_POST['playlistID'];
-$pid = 1;
+$pid = $_POST['q'];
 $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, shows WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
 $stmt->execute();
 $result = $stmt->get_result();
