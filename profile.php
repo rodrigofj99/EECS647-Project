@@ -126,13 +126,13 @@ session_start();
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #B22222;
   color: white;
 }
 
 .modal-footer {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #B22222;
   color: white;
 }
 
@@ -234,8 +234,8 @@ session_start();
           <label>Select friend(s)</label>
           <select name="friends[]" id="friendsList" multiple="multiple">
           <?php
-            $dbConnection = OpenCon(); 
-            $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in 
+            $dbConnection = OpenCon();
+            $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in
             (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
             $stmt->execute();
             $result = $stmt->get_result();
@@ -251,7 +251,7 @@ session_start();
         <div class="row pt-3">
           <button type="submit" name="create_button">Create</button>
         </div>
-          <?php 
+          <?php
             echo '<input type="text" class="invisible" name="uid" value="'.($userID).'"></input>';
           ?>
       </form>
@@ -307,7 +307,7 @@ session_start();
                     <div id="friends">
                     <?php
                         $dbConnection = OpenCon();
-                        $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in 
+                        $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in
                         (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
                         $stmt->execute();
                         $result = $stmt->get_result();
@@ -357,7 +357,7 @@ session_start();
                               </form>
                               <?php
                                 $dbConnection = OpenCon();
-                                $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in 
+                                $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in
                                 (SELECT PID FROM userhasplaylist WHERE UID=$userID)");
                                 $stmt->execute();
                                 $result = $stmt->get_result();
