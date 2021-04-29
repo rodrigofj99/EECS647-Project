@@ -106,7 +106,6 @@ text-decoration:none;
     <nav aria-label="breadcrumb" class="main-breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="profile.php">User Profile</a></li>
-        <li class="breadcrumb-item"><a href="inside_playlist.php">User Playlist</a></li>
         <li class="breadcrumb-item active" aria-current="page">Add to Playlist</li>
       </ol>
     </nav>
@@ -142,7 +141,10 @@ text-decoration:none;
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
-$pid = 1; //TODO change hardcoded value
+if(isset($_POST['add_movie']))
+{
+$pid = $_POST['pid'];
+}
 
 if(isset($_POST['AddToPlaylist']))
 {

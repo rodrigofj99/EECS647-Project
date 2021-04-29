@@ -279,11 +279,20 @@ echo '
 </div>';
 }
 }
-CloseCon($dbConnection);
 ?>
 <div class="container">
     <div class="main-body">
-<button onclick="window.location.href='search_motion_picture.php'">Add a movie or tv show to this playlist</button>
+      <form name="add_movie" action="search_motion_picture.php" method="post">
+        <?php
+        echo '<input type="text" class= "invisible" name="pid" value="';
+        $pid = $_POST['q'];
+        echo $pid;
+        echo'
+         "/>';
+         CloseCon($dbConnection);
+         ?>
+        <button type="submit" name="add_movie">Add a movie or tv show to this playlist</button>
+      </form>
 </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
