@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+ ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -113,7 +116,8 @@ img.profile-photo-lg{
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
-$uid = 1; //TODO change hardcoded value
+//$uid = 1;
+$uid = $_SESSION['UID'];
 
 if(isset($_POST['AddAsFriend']))
 {
