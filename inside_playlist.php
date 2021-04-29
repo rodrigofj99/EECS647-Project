@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+ ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -123,13 +126,16 @@ input.invisible {visibility:hidden;}
   //TODO change hardcoded value
   $pid = $_POST['q'];
 
+  $foundMovies = true;
+  $foundShows = true;
+
   $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, movie WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
   $stmt->execute();
   $result = $stmt->get_result();
   $val = $result->fetch_row();
   if(!$val)
   {
-    echo "No movies found in this playlist";
+    $foundMovies = false;
   }else
   {
     $stmt->execute();
@@ -208,7 +214,7 @@ $result = $stmt->get_result();
 $val = $result->fetch_row();
 if(!$val)
 {
-  echo "No tv shows found in this playlist";
+    $foundShows = false;
 }else
 {
   $stmt->execute();
@@ -279,16 +285,18 @@ echo '
 </div>';
 }
 }
+
+if(!$foundShows && !$foundMovies)
+{
+echo("There is nothing on the playlist yet");
+}
+
 ?>
 <div class="container">
     <div class="main-body">
       <form name="add_movie" action="search_motion_picture.php" method="post">
         <?php
-        echo '<input type="text" class= "invisible" name="pid" value="';
-        $pid = $_POST['q'];
-        echo $pid;
-        echo'
-         "/>';
+        $_SESSION['PID'] = $pid;
          CloseCon($dbConnection);
          ?>
         <button type="submit" name="add_movie">Add a movie or tv show to this playlist</button>

@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+ ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -141,10 +144,7 @@ text-decoration:none;
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
-if(isset($_POST['add_movie']))
-{
-$pid = $_POST['pid'];
-}
+$pid = $_SESSION['PID'];
 
 if(isset($_POST['AddToPlaylist']))
 {
