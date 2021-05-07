@@ -12,11 +12,30 @@ session_start();
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
 
+.btn:active, .btn-outline-primary:active, .btn-primary:active{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn, .btn-outline-primary, .btn-primary{
+  color: rgb(185,19,2);
+  border-color: white;
+  
+}
+
+
   body{
   margin-top:20px;
   color: #1a202c;
   text-align: left;
-  background-color: #B22222;
+  background-color: rgb(20,20,20);
 }
 .main-body {
   padding: 15px;
@@ -299,7 +318,7 @@ echo("There is nothing on the playlist yet");
         $_SESSION['PID'] = $pid;
          CloseCon($dbConnection);
          ?>
-        <button type="submit" name="add_movie">Add a movie or tv show to this playlist</button>
+        <button type="submit" class="btn btn-outline-primary" name="add_movie">Add a movie or tv show to this playlist</button>
       </form>
 </div>
 </div>

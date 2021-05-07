@@ -12,7 +12,11 @@ session_start();
 }
 
 body {
-	background: #f6f5f7;
+	/*background: #f6f5f7;*/
+	background-image: url('http://mppmduse2pmpovwapp.azurewebsites.net/wp-content/uploads/2019/09/netflix-background-9.jpg'); /*https://cdn.hipwallpaper.com/i/98/21/dUyCkp.jpg */
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -24,7 +28,9 @@ body {
 
 h1 {
 	font-weight: bold;
+	color:#fff;
 	margin: 0;
+	opacity: 1;
 }
 
 h2 {
@@ -44,7 +50,7 @@ span {
 }
 
 a {
-	color: #333;
+	color: #fff;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
@@ -77,7 +83,7 @@ button.ghost {
 }
 
 form {
-	background-color: #FFFFFF;
+	background-color: #000;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -88,11 +94,14 @@ form {
 }
 
 input {
-	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
+	color:white;
+	background-color: #878C8F;
+	opacity: 1;
+	font-weight: bold;
 }
 
 .container {
@@ -112,12 +121,14 @@ input {
 	top: 0;
 	height: 100%;
 	transition: all 0.6s ease-in-out;
+	opacity: 1;
 }
 
 .sign-in-container {
 	left: 0;
 	width: 50%;
 	z-index: 2;
+	opacity: 1;
 }
 
 .container.right-panel-active .sign-in-container {
@@ -127,13 +138,12 @@ input {
 .sign-up-container {
 	left: 0;
 	width: 50%;
-	opacity: 0;
 	z-index: 1;
+	opacity: 1;
 }
 
 .container.right-panel-active .sign-up-container {
 	transform: translateX(100%);
-	opacity: 1;
 	z-index: 5;
 	animation: show 0.6s;
 }
@@ -257,6 +267,10 @@ footer a {
     text-decoration: none;
 }
 
+.opacity {
+	opacity: 0.8;
+}
+
 </style>
 </head>
 
@@ -307,7 +321,7 @@ footer a {
 
 			CloseCon($dbConnection);
 	?>
-<div class="container" id="container">
+<div class="container opacity" id="container">
 	<div class="form-container sign-up-container">
 		<form name="signup" action=""  method="post">
 			<h1>Create Account</h1>

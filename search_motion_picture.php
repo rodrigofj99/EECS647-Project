@@ -13,11 +13,28 @@ session_start();
 
     <style type="text/css">
 
+.btn:active, .btn-outline-primary:active, .btn-primary:active{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn, .btn-outline-primary, .btn-primary{
+  color: rgb(185,19,2);
+  border-color: white;
+}
+
     body{
   margin-top:20px;
   color: #1a202c;
   text-align: left;
-  background-color: #B22222;
+  background-color: rgb(20,20,20);
 }
 .main-body {
   padding: 15px;
@@ -131,7 +148,7 @@ text-decoration:none;
                                     </div>
                                     <!--end of col-->
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" name="search_motion_picture" type="submit">Search</button>
+                                        <button class="btn btn-outline-primary btn-lg btn-success" name="search_motion_picture" type="submit">Search</button>
                                     </div>
                                     <!--end of col-->
                                 </div>
@@ -212,7 +229,7 @@ if(isset($_POST['search_motion_picture']))
                                       echo '>
                                       </input>
                                     <a class="table-link danger">
-                                    <button type="submit" name="AddToPlaylist">
+                                    <button type="submit" name="AddToPlaylist" class="btn btn-outline-primary">
                                             <span class="fa-stack">
                                                 Add
                                             </span>
@@ -288,7 +305,7 @@ if(isset($_POST['search_motion_picture']))
                                     echo '>
                                     </input>
                                   <a class="table-link danger">
-                                  <button type="submit" name="AddToPlaylist">
+                                  <button type="submit" name="AddToPlaylist" class="btn btn-outline-primary">
                                           <span class="fa-stack">
                                               Add
                                           </span>

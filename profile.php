@@ -80,6 +80,7 @@ session_start();
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  
 }
 
 /* Modal Content */
@@ -136,7 +137,27 @@ session_start();
   color: white;
 }
 
+body{
+  background-color: rgb(20,20,20);
+}
 
+.btn:active, .btn-outline-primary:active, .btn-primary:active{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn, .btn-outline-primary, .btn-primary{
+  color: rgb(185,19,2);
+  border-color: white;
+  
+}
 
     </style>
 
@@ -319,7 +340,7 @@ session_start();
                         }
                     ?>
                     </div>
-                    <button class="btn btn-primary" id="findFriends">Find friends</button>
+                    <button class="btn btn-outline-primary" id="findFriends">Find friends</button>
                   </div>
                 </div>
               </div>

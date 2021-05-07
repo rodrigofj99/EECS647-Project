@@ -17,7 +17,7 @@ session_start();
   margin-top:20px;
   color: #1a202c;
   text-align: left;
-  background-color: #f6f5f7;
+  background-color: rgb(20,20,20);
 }
 .main-body {
   padding: 15px;
@@ -41,6 +41,8 @@ session_start();
   border-top: 1px solid #f1f2f2;
   border-bottom: 1px solid #f1f2f2;
   margin-bottom: 20px;
+  background-color: white;
+  border-radius:10px
 }
 
 img.profile-photo-lg{
@@ -68,6 +70,24 @@ img.profile-photo-lg{
     border: none;
     outline: none;
     box-shadow: none;
+}
+
+.btn:active, .btn-outline-primary:active, .btn-primary:active{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+  background-color: rgb(185,19,2);
+  border-color: black;
+  color:white;
+}
+
+.btn, .btn-outline-primary, .btn-primary{
+  color: rgb(185,19,2);
+  border-color: black;
+  background-color: white;
 }
     </style>
 </head>
