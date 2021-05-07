@@ -369,7 +369,7 @@ body{
                               <tr>
                                 <th><span>Name</span></th>
                                 <th><span>Created</span></th>
-                                <th><span>Status</span></th>
+                                <th><span></span></th>
                               </tr>
                             </thead>
                             <tbody id="playlists">
@@ -378,29 +378,44 @@ body{
                               </form>
                               <?php
                                 $dbConnection = OpenCon();
-                                $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in
-                                (SELECT PID FROM userhasplaylist WHERE UID=$userID)");
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                while($val = $result->fetch_row())
+                                if(isset($_POST['delete_button']))
                                 {
-                                    echo '<tr>';
-                                    echo '<td><a class="btn btn-outline-primary" name="playlist_button" id=';
-                                    echo ($val[2]);
-                                    echo '>'.($val[0]).'</a></td>';
-                                    echo '<td>'.($val[1]).'</td>';
-                                    echo '<td class=text-center><span class=label label-default>New</span></td>';
-                                    echo '</tr>';
+                                  $pid = $_POST['pid'];
+                                  $stmt = $dbConnection->prepare("DELETE FROM playlist WHERE PID=$pid;");
+                                  $stmt->execute();
+                                  $stmt = $dbConnection->prepare("DELETE FROM userhasplaylist WHERE PID=$pid;");
+                                  $stmt->execute();
                                 }
-                                echo '<script type="text/javascript">';
-                                echo 'let playlist_button = document.getElementsByName("playlist_button");
-                                      for (let i = 0; i < playlist_button.length; i++) {
-                                        playlist_button[i].addEventListener("click", function() {
-                                          document.getElementById("inside").value = this.id;
-                                          document.getElementById("insidePlaylist").submit();
-                                        });
-                                      }';
-                                echo '</script>';
+                              
+                                  $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in
+                                  (SELECT PID FROM userhasplaylist WHERE UID=$userID)");
+                                  $stmt->execute();
+                                  $result = $stmt->get_result();
+                                  while($val = $result->fetch_row())
+                                  {
+                                      echo '<tr>';
+                                      echo '<td><a class="btn btn-outline-primary" name="playlist_button" id=';
+                                      echo ($val[2]);
+                                      echo '>'.($val[0]).'</a></td>';
+                                      echo '<td>'.($val[1]).'</td>';
+                                      echo '<td class=text-center><span class=label label-default>
+                                      <form action="" name="DeletePlaylist" method="post">
+                                      <button type="submit" name="delete_button" class="btn btn-outline-primary">Delete</button>
+                                      <input size="1"class="invisible" name="pid" value="'.($val[2]).'"></input>
+                                      </form></span></td>';
+                                      echo '</tr>';
+                                  }
+                                  echo '<script type="text/javascript">';
+                                  echo 'let playlist_button = document.getElementsByName("playlist_button");
+                                        for (let i = 0; i < playlist_button.length; i++) {
+                                          playlist_button[i].addEventListener("click", function() {
+                                            document.getElementById("inside").value = this.id;
+                                            document.getElementById("insidePlaylist").submit();
+                                          });
+                                        }';
+                              
+                                  echo '</script>';
+                                
                                 CloseCon($dbConnection);
                           ?>
 </tbody>
