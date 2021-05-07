@@ -27,7 +27,7 @@ session_start();
 .btn, .btn-outline-primary, .btn-primary{
   color: rgb(185,19,2);
   border-color: white;
-  
+
 }
 
 
@@ -133,17 +133,18 @@ input.invisible {visibility:hidden;}
   include 'db_connect.php';
   $dbConnection = OpenCon();
 
-  if(isset($_POST['deleteMotionPicture']))
+  if(isset($_POST['deleteMotionPicture'])) //runs when called from inside_playlist and uses previously defined session variable
   {
     $movieID = $_POST['mid'];
+    $pid = $_SESSION['PID'];
     //echo($movieID);
     $stmt = $dbConnection->prepare("DELETE FROM playlisthasmotionpicture WHERE MID = $movieID");
     $stmt->execute();
+  }else //runs when called from profile with variable q
+  {
+      $pid = $_POST['q'];
+      $_SESSION['PID'] = $pid;
   }
-
-
-  //TODO change hardcoded value
-  $pid = $_POST['q'];
 
   $foundMovies = true;
   $foundShows = true;
@@ -225,8 +226,6 @@ input.invisible {visibility:hidden;}
 }
 ?>
 <?php
-//$pid = $_POST['playlistID'];
-$pid = $_POST['q'];
 $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM playlisthasmotionpicture, motionpicture, motionpicturecountry, shows WHERE PID = $pid AND playlisthasmotionpicture.MID = motionpicture.MID AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
 $stmt->execute();
 $result = $stmt->get_result();
@@ -314,10 +313,7 @@ echo("There is nothing on the playlist yet");
 <div class="container">
     <div class="main-body">
       <form name="add_movie" action="search_motion_picture.php" method="post">
-        <?php
-        $_SESSION['PID'] = $pid;
-         CloseCon($dbConnection);
-         ?>
+
         <button type="submit" class="btn btn-outline-primary" name="add_movie">Add a movie or tv show to this playlist</button>
       </form>
 </div>
