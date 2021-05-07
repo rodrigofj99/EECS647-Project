@@ -14,7 +14,6 @@ session_start();
     <style type="text/css">
 
     body{
-  margin-top:20px;
   color: #1a202c;
   text-align: left;
   background-color: rgb(20,20,20);
@@ -30,6 +29,10 @@ session_start();
   margin-bottom: 20px;
 }
 
+.container{
+  
+}
+
 .people-nearby .google-maps .map{
   height: 300px;
   width: 100%;
@@ -42,7 +45,7 @@ session_start();
   border-bottom: 1px solid #f1f2f2;
   margin-bottom: 20px;
   background-color: white;
-  border-radius:10px
+  border-radius:10px;
 }
 
 img.profile-photo-lg{
@@ -64,7 +67,6 @@ img.profile-photo-lg{
     border: none;
     background: #B22222;
 }
-
 
 .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
     border: none;
@@ -178,10 +180,15 @@ if(isset($_POST['search_friends']))
                       <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
                     </div>
                     <div class="col-md-7 col-sm-7">
-                      <h5>';
-                      echo($row[0]);
-                      echo '
-                      </h5>
+                      <form>
+                        <input size="1" name="friend_profile" type="text" class="invisible" value ='.($row[0]).'></input>
+                        <button type="submit" style="border:none; background:none;" name="visitFriend">
+                        <h5>';
+                        echo($row[0]);
+                        echo '
+                        </h5>
+                        </button>
+                      </form>
                     </div>
                     <div class="col-md-3 col-sm-3">
                     <form name="add_friend" action="" method="post">

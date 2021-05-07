@@ -155,9 +155,11 @@ body{
 
 .btn, .btn-outline-primary, .btn-primary{
   color: rgb(185,19,2);
-  border-color: white;
-  
+  border-color: white; 
 }
+
+.btn:focus, .btn-outline-primary:focus, .btn-primary:focus 
+{ outline-style: none; }
 
     </style>
 
@@ -381,8 +383,8 @@ body{
                                 if(isset($_POST['delete_button']))
                                 {
                                   $pid = $_POST['pid'];
-                                  $stmt = $dbConnection->prepare("DELETE FROM playlist WHERE PID=$pid;");
-                                  $stmt->execute();
+                                  //$stmt = $dbConnection->prepare("DELETE FROM playlist WHERE PID=$pid;");
+                                  //$stmt->execute();
                                   $stmt = $dbConnection->prepare("DELETE FROM userhasplaylist WHERE PID=$pid;");
                                   $stmt->execute();
                                 }
