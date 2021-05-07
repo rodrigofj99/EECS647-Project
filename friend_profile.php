@@ -362,7 +362,7 @@ $friendID = $_POST['$friendID'];
                               <tr>
                                 <th><span>Name</span></th>
                                 <th><span>Created</span></th>
-                                <th><span>Status</span></th>
+
                               </tr>
                             </thead>
                             <tbody id="playlists">
@@ -382,7 +382,6 @@ $friendID = $_POST['$friendID'];
                                     echo ($val[2]);
                                     echo '>'.($val[0]).'</a></td>';
                                     echo '<td>'.($val[1]).'</td>';
-                                    echo '<td class=text-center><span class=label label-default>New</span></td>';
                                     echo '</tr>';
                                 }
                                 CloseCon($dbConnection);
