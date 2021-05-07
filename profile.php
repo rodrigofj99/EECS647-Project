@@ -80,7 +80,7 @@ session_start();
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  
+
 }
 
 /* Modal Content */
@@ -156,7 +156,7 @@ body{
 .btn, .btn-outline-primary, .btn-primary{
   color: rgb(185,19,2);
   border-color: white;
-  
+
 }
 
     </style>
@@ -328,15 +328,19 @@ body{
                     <div id="friends">
                     <?php
                         $dbConnection = OpenCon();
-                        $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in
+                        $stmt = $dbConnection->prepare("SELECT Name, UID FROM user where UID in
                         (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
                         $stmt->execute();
                         $result = $stmt->get_result();
                         while($val = $result->fetch_row())
                         {
-                            echo '<div style="text-align: center" class="pb-2">';
-                            echo '<a class="btn btn-outline-primary">'.($val[0]).'</a>';
-                            echo '</div>';
+                          echo '<div style="text-align: center" class="pb-2">';
+                          echo ' <form action="friend_profile.php" name="friendProfile" method="post">';
+                          echo ' <input type="text" class="invisible" size ="1"></input>';
+                          echo '<button class="btn btn-outline-primary" type="submit" name="friendProfile">'.($val[0]).'</button>';
+                          echo ' <input type="text" class="invisible" name="$friendID" value="'.($val[1]).'" size ="1"></input>';
+                          echo ' </form>';
+                          echo '</div>';
                         }
                     ?>
                     </div>
@@ -386,7 +390,7 @@ body{
                                   $stmt = $dbConnection->prepare("DELETE FROM userhasplaylist WHERE PID=$pid;");
                                   $stmt->execute();
                                 }
-                              
+
                                   $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in
                                   (SELECT PID FROM userhasplaylist WHERE UID=$userID)");
                                   $stmt->execute();
@@ -413,9 +417,9 @@ body{
                                             document.getElementById("insidePlaylist").submit();
                                           });
                                         }';
-                              
+
                                   echo '</script>';
-                                
+
                                 CloseCon($dbConnection);
                           ?>
 </tbody>
