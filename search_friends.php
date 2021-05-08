@@ -180,8 +180,8 @@ if(isset($_POST['search_friends']))
                       <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
                     </div>
                     <div class="col-md-7 col-sm-7">
-                      <form>
-                        <input size="1" name="friend_profile" type="text" class="invisible" value ='.($row[0]).'></input>
+                      <form action="friend_profile.php" name="friendProfile" method="post">
+                      <input type="text" class="invisible" name="$friendID" value="'.($row[1]).'" size ="1"></input>
                         <button type="submit" style="border:none; background:none;" name="visitFriend">
                         <h5>';
                         echo($row[0]);

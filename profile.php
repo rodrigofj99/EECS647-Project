@@ -141,25 +141,24 @@ body{
   background-color: rgb(20,20,20);
 }
 
-.btn:active, .btn-outline-primary:active, .btn-primary:active{
+.btn:active, .btn-outline-primary:active{
   background-color: rgb(185,19,2);
   border-color: black;
   color:white;
 }
 
-.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+.btn:hover , .btn-outline-primary:hover{
   background-color: rgb(185,19,2);
   border-color: black;
   color:white;
 }
 
-.btn, .btn-outline-primary, .btn-primary{
+.btn-outline-primary, .btn-outline-primary{
   color: rgb(185,19,2);
   border-color: white;
-
 }
 
-.btn:focus, .btn-outline-primary:focus, .btn-primary:focus 
+.btn:focus, .btn-outline-primary:focus
 { outline-style: none; }
 
     </style>
@@ -234,7 +233,7 @@ body{
                           echo $val[0];
                         ?>
                       </h4>
-                      <button class="btn btn-primary" style="display:none">Follow</button>
+                      <button class="btn btn-outline-primary" style="display:none">Follow</button>
                       <button class="btn btn-outline-primary" id="myBtn">Create Playlist</button>
 
 
@@ -340,7 +339,7 @@ body{
                           echo '<div style="text-align: center" class="pb-2">';
                           echo ' <form action="friend_profile.php" name="friendProfile" method="post">';
                           echo ' <input type="text" class="invisible" size ="1"></input>';
-                          echo '<button class="btn btn-outline-primary" type="submit" name="friendProfile">'.($val[0]).'</button>';
+                          echo ' <button class="btn" type="submit" name="friendProfile">'.($val[0]).'</button>';
                           echo ' <input type="text" class="invisible" name="$friendID" value="'.($val[1]).'" size ="1"></input>';
                           echo ' </form>';
                           echo '</div>';
@@ -401,9 +400,9 @@ body{
                                   while($val = $result->fetch_row())
                                   {
                                       echo '<tr>';
-                                      echo '<td><a class="btn btn-outline-primary" name="playlist_button" id=';
+                                      echo '<td><button class="btn" name="playlist_button" id=';
                                       echo ($val[2]);
-                                      echo '>'.($val[0]).'</a></td>';
+                                      echo '>'.($val[0]).'</button></td>';
                                       echo '<td>'.($val[1]).'</td>';
                                       echo '<td class=text-center><span class=label label-default>
                                       <form action="" name="DeletePlaylist" method="post">
