@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+  session_start();
+ ?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -138,23 +141,25 @@ body{
   background-color: rgb(20,20,20);
 }
 
-.btn:active, .btn-outline-primary:active, .btn-primary:active{
+.btn:active, .btn-outline-primary:active{
   background-color: rgb(185,19,2);
   border-color: black;
   color:white;
 }
 
-.btn:hover , .btn-outline-primary:hover, .btn-primary:hover{
+.btn:hover , .btn-outline-primary:hover{
   background-color: rgb(185,19,2);
   border-color: black;
   color:white;
 }
 
-.btn, .btn-outline-primary, .btn-primary{
+.btn-outline-primary, .btn-outline-primary{
   color: rgb(185,19,2);
   border-color: white;
-
 }
+
+.btn:focus, .btn-outline-primary:focus
+{ outline-style: none; }
 
     </style>
 
@@ -196,6 +201,7 @@ body{
 <?php
 include 'db_connect.php';
 $dbConnection = OpenCon();
+$userID = $_SESSION['UID'];
 $friendID = $_POST['$friendID'];
 ?>
 
@@ -227,7 +233,42 @@ $friendID = $_POST['$friendID'];
                           echo $val[0];
                         ?>
                       </h4>
-                      <button class="btn btn-primary" style="display:none">Follow</button>
+                      <?php
+                        if(isset($_POST['AddAsFriend']))
+                        {
+                          $stmt = $dbConnection->prepare("INSERT INTO userfriend(Friend1UID,Friend2UID) VALUES($userID,$friendID)");
+                          $stmt->execute();
+                          $stmt = $dbConnection->prepare("INSERT INTO userfriend(Friend1UID,Friend2UID) VALUES($friendID,$userID)");
+                          $stmt->execute();
+                        }
+                        if(isset($_POST['DeleteFriend']))
+                        {
+                          $stmt = $dbConnection->prepare("DELETE FROM userfriend WHERE Friend1UID=$userID AND Friend2UID=$friendID;");
+                          $stmt->execute();
+                          $stmt = $dbConnection->prepare("DELETE FROM userfriend WHERE Friend1UID=$friendID AND Friend2UID=$userID;");
+                          $stmt->execute();
+                        }
+                        $stmt = $dbConnection->prepare("SELECT * FROM userfriend WHERE Friend1UID = $userID AND Friend2UID=$friendID");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        $val = $result->fetch_row();
+                        if(!$val)
+                        {
+                          echo '<form action="" name="friendProfile" method="post">
+                          <input type="text" class="invisible" name="$friendID" value="'.($friendID).'" size ="1"></input>
+                          <button class="btn btn-outline-primary" name="AddAsFriend">Follow</button>
+                          <input class="invisible" size ="1"></input>';
+                        }
+                        else
+                        {
+                          echo '<form action="" name="friendProfile" method="post">
+                          <input type="text" class="invisible" name="$friendID" value="'.($friendID).'" size ="1"></input>
+                          <button class="btn btn-outline-primary" name="DeleteFriend">Unfollow</button>
+                          <input class="invisible" size ="1"></input>';
+                        }
+                      ?>
+                      </form>
+                      
 
 
                         <!-- The Modal -->
@@ -422,5 +463,9 @@ $friendID = $_POST['$friendID'];
 <script type="text/javascript">
 
 </script>
+<footer class="pt-2 my-2 border-top text-center" style="color:white">
+		Copyright &copy; 2021: Rodrigo Figueroa Justiniano, Victoria Maldonado.
+		<a href="https://github.com/rodrigofj99/EECS647-Project" class="ml-2">GitHub Repository</a>
+</footer>
 </body>
 </html>

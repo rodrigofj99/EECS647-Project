@@ -341,5 +341,9 @@ CloseCon($dbConnection);
 <script type="text/javascript">
 
 </script>
+<footer class="pt-2 my-2 border-top text-center" style="color:white">
+		Copyright &copy; 2021: Rodrigo Figueroa Justiniano, Victoria Maldonado.
+		<a href="https://github.com/rodrigofj99/EECS647-Project" class="ml-2">GitHub Repository</a>
+</footer>
 </body>
 </html>

@@ -86,6 +86,10 @@ img.profile-photo-lg{
   color:white;
 }
 
+button:hover{
+  outline: none;
+}
+
 .btn, .btn-outline-primary, .btn-primary{
   color: rgb(185,19,2);
   border-color: black;
@@ -151,6 +155,15 @@ if(isset($_POST['AddAsFriend']))
   echo("Friend Added");
 }
 
+if(isset($_POST['DeleteFriend']))
+{
+  $friendUID = $_POST['friendUID'];
+  $stmt = $dbConnection->prepare("DELETE FROM userfriend WHERE Friend1UID=$uid AND Friend2UID=$friendUID;");
+  $stmt->execute();
+  $stmt = $dbConnection->prepare("DELETE FROM userfriend WHERE Friend1UID=$friendUID AND Friend2UID=$uid;");
+  $stmt->execute();
+}
+
 if(isset($_POST['search_friends']))
 {
   $user_name = $_POST['search'];
@@ -195,9 +208,21 @@ if(isset($_POST['search_friends']))
                     <input type="text" class="invisible" name="friendUID" value =';
                      echo($row[1]);
                     echo '>
-                    </input>
-                      <button type="submit" class="btn btn-primary pull-right" name="AddAsFriend" >Add Friend</button>
-                      </form>
+                    </input>';
+
+                    $stmt = $dbConnection->prepare("SELECT * FROM userfriend WHERE Friend1UID = $uid AND Friend2UID=$row[1]");
+                    $stmt->execute();
+                    $x = $stmt->get_result();
+                    $val = $x->fetch_row();
+                    if(!$val)
+                    {
+                      echo '<button type="submit" class="btn btn-primary pull-right" name="AddAsFriend" >Add Friend</button>';
+                    }
+                    else
+                    {
+                      echo '<button type="submit" class="btn btn-primary pull-right" name="DeleteFriend" >Remove Friend</button>';
+                    }
+                      echo'</form>
                     </div>
                   </div>
                 </div>
@@ -219,5 +244,9 @@ CloseCon($dbConnection);
 <script type="text/javascript">
 
 </script>
+<footer class="pt-2 my-2 border-top text-center" style="color:white">
+		Copyright &copy; 2021: Rodrigo Figueroa Justiniano, Victoria Maldonado.
+		<a href="https://github.com/rodrigofj99/EECS647-Project" class="ml-2">GitHub Repository</a>
+</footer>
 </body>
 </html>
