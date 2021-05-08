@@ -110,9 +110,19 @@ text-decoration:none;
 }
 
 input.invisible {visibility:hidden;}
+
+.logo{
+	width:500px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
     </style>
 </head>
+
+
 <body>
+<div><img class="logo" src="logo-removebg-preview.png" alt=""></div>
   <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
 

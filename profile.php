@@ -161,6 +161,13 @@ body{
 .btn:focus, .btn-outline-primary:focus
 { outline-style: none; }
 
+.logo{
+	width:500px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+
     </style>
 
 
@@ -205,6 +212,7 @@ body{
 
 
 <div class="container">
+<div><img class="logo" src="logo-removebg-preview.png" alt=""></div>
     <div class="main-body">
 
           <!-- Breadcrumb -->

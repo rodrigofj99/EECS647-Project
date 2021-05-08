@@ -95,10 +95,17 @@ button:hover{
   border-color: black;
   background-color: white;
 }
+
+.logo{
+	width:500px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
     </style>
 </head>
 <body>
-
+<div><img class="logo" src="logo-removebg-preview.png" alt=""></div>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
     <div class="container">

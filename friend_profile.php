@@ -161,12 +161,19 @@ body{
 .btn:focus, .btn-outline-primary:focus
 { outline-style: none; }
 
+.logo{
+	width:500px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
     </style>
 
 
 
 </head>
 <body>
+<div><img class="logo" src="logo-removebg-preview.png" alt=""></div>
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
 

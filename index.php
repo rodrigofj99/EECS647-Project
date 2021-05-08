@@ -271,6 +271,13 @@ footer a {
 	opacity: 0.8;
 }
 
+.logo{
+	width:500px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+
 </style>
 </head>
 
@@ -321,6 +328,7 @@ footer a {
 
 			CloseCon($dbConnection);
 	?>
+<div style="background-color: #000; opacity:0.8"><img class="logo" src="logo-removebg-preview.png" alt=""></div>
 <div class="container opacity" id="container">
 	<div class="form-container sign-up-container">
 		<form name="signup" action=""  method="post">
