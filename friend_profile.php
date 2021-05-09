@@ -419,8 +419,7 @@ $friendID = $_POST['$friendID'];
                               </form>
                               <?php
                                 $dbConnection = OpenCon();
-                                $stmt = $dbConnection->prepare("SELECT Name, Date, PID FROM playlist where PID in
-                                (SELECT PID FROM userhasplaylist WHERE UID=$friendID)");
+                                $stmt = $dbConnection->prepare("SELECT DISTINCT Name, Date, playlist.PID FROM playlist, userhasplaylist where UID=$friendID AND playlist.PID = userhasplaylist.PID");
                                 $stmt->execute();
                                 $result = $stmt->get_result();
                                 while($val = $result->fetch_row())

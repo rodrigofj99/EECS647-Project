@@ -338,8 +338,7 @@ body{
                     <div id="friends">
                     <?php
                         $dbConnection = OpenCon();
-                        $stmt = $dbConnection->prepare("SELECT Name, UID FROM user where UID in
-                        (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
+                        $stmt = $dbConnection->prepare("SELECT Name, UID FROM user, userfriend WHERE UID = Friend1UID AND Friend2UID=$userID");
                         $stmt->execute();
                         $result = $stmt->get_result();
                         while($val = $result->fetch_row())
@@ -395,8 +394,6 @@ body{
                                 if(isset($_POST['delete_button']))
                                 {
                                   $pid = $_POST['pid'];
-                                  //$stmt = $dbConnection->prepare("DELETE FROM playlist WHERE PID=$pid;");
-                                  //$stmt->execute();
                                   $stmt = $dbConnection->prepare("DELETE FROM userhasplaylist WHERE PID=$pid;");
                                   $stmt->execute();
                                 }
