@@ -11,6 +11,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style type="text/css">
+
     	body{
     margin-top:20px;
     color: #1a202c;
@@ -125,17 +126,6 @@ session_start();
   cursor: pointer;
 }
 
-.modal-header {
-  padding: 2px 16px;
-  background-color: #B22222;
-  color: white;
-}
-
-.modal-footer {
-  padding: 2px 16px;
-  background-color: #B22222;
-  color: white;
-}
 
 body{
   background-color: rgb(20,20,20);
@@ -250,45 +240,60 @@ body{
 
 <!-- Modal content -->
 <div class="modal-content">
-  <div class="modal-header">
-    <span class="close">&times;</span>
+  <div>
+    <span class="close pr-2 pt-1">&times;</span>
   </div>
   <div class="modal-body">
-  <h3 class="text-center">New Playlist</h3>
     <div class="col" style="padding-left:30%; padding-right:25%">
-      <form action="newPlaylist.php" name="newPlaylist" method="post">
-
-        <div class="row pb-2">
-          <input type="text" placeholder="Name" name="name" require/>
-        </div>
-        <div>
-          <label>Select friend(s)</label>
-          <select name="friends[]" id="friendsList" multiple="multiple">
-          <?php
-            $dbConnection = OpenCon();
-            $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in
-            (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            echo '<label type="text">Select a friend</label>';
-            while($val = $result->fetch_row())
-            {
-                echo '<option value="'.($val[0]).'">'.($val[0]).'</option>';
-            }
-            CloseCon($dbConnection);
-          ?>
-          </select>
-        </div>
-        <div class="row pt-3">
-          <button type="submit" name="create_button">Create</button>
-        </div>
+    <form action="newPlaylist.php" name="newPlaylist" method="post" novalidate >
+      <fieldset>
+        <legend>New Playlist</legend>
+        <label>Name:</label><br>
+        <input type="text" id="fname" name="name" value=""><br>
+        <label id="friends_label">Friends:</label><br>
+        <input type="text" list="data" id="input">
+        <datalist id="data">
           <?php
             echo '<input type="text" class="invisible" name="uid" value="'.($userID).'"></input>';
+            $dbConnection = OpenCon();
+            $stmt = $dbConnection->prepare("SELECT Name FROM user where UID in
+              (SELECT Friend2UID FROM userfriend WHERE Friend1UID=$userID)");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($val = $result->fetch_row())
+            {
+              echo '<option value="'.($val[0]).'">'.($val[0]).'</option>';
+            }
+            echo '<script type="text/javascript">';
+            echo 'var textbox = document.getElementById("input");
+            textbox.addEventListener("input", function(e){
+                
+                var isInputEvent = (Object.prototype.toString.call(e).indexOf("InputEvent") > -1);
+                
+                if(!isInputEvent){
+                    let l = document.createElement("Label");
+                    let b = document.createElement("br");
+                    let i = document.createElement("input");
+                    l.innerHTML = textbox.value;
+                    i.type = "hidden";
+                    i.name = "friends[]";
+                    i.value = textbox.value;
+                    document.getElementById("friends_label").appendChild(b);
+                    document.getElementById("friends_label").appendChild(l);
+                    document.getElementById("friends_label").appendChild(i);
+                    textbox.value="";
+                  }
+                }, false);';
+            echo '</script>';
+            CloseCon($dbConnection);
           ?>
-      </form>
+        </datalist><br>
+        
+        <button type="submit" name="create_button" class="mt-4 btn btn-outline-primary">Create</button>
+      </fieldset>
+    </form>
     </div>
   </div>
-  <div class="modal-footer" id="x"></div>
 </div>
 
 </div>
