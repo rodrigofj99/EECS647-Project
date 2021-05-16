@@ -210,7 +210,6 @@ if(isset($_POST['search_motion_picture']))
     $vis_ip = getVisIPAddr();
     $country = geoip_country_code_by_name($vis_ip);  
     
-
   $motion_picture_name = $_POST['search'];
   $motion_picture_name = str_ireplace(" ","%20", $motion_picture_name);
   $curl = curl_init();
