@@ -194,12 +194,28 @@ if(isset($_POST['search_motion_picture']))
     $result = $stmt->get_result();
     while ($row = $result -> fetch_row())
     {*/
+      function getVisIpAddr() {
       
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+    }
+      
+    $vis_ip = getVisIPAddr();
+    $country = geoip_country_code_by_name($vis_ip);  
+    
+
   $motion_picture_name = $_POST['search'];
   $motion_picture_name = str_ireplace(" ","%20", $motion_picture_name);
   $curl = curl_init();
   curl_setopt_array($curl, [
-    CURLOPT_URL => "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=$motion_picture_name&country=uk",
+    CURLOPT_URL => "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=$motion_picture_name&country=us",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_ENCODING => "",
