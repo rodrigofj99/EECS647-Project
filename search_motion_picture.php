@@ -217,8 +217,9 @@ if(isset($_POST['search_motion_picture']))
   curl_close($curl);
   if ($err) echo "cURL Error #:" . $err;
   else{ //echo $response;
-    $answer = json_decode($response,true);   
-  echo '<div style="color:white;">';//echo $response;echo'</div>';
+  $answer = json_decode($response,true);
+  for ($i=0; $i < count($answer['results']); $i++) { 
+  //echo '<div style="color:white;">';echo $response;echo'</div>';
   echo '
   <hr>
   <div class="container bootstrap snippets bootdey">
@@ -226,8 +227,10 @@ if(isset($_POST['search_motion_picture']))
         <div class="col-lg-12">
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
-                <div class="row">
-                  <div class="col-lg-3"><img style="height:100%; width:100%;" class="ml-2 mt-n2" src="'.($answer['results'][0]['picture']).'"></div>
+                <div class="row">';
+                if ($answer['results'][$i]['picture'] != "null") {
+                  echo '<div class="col-lg-3"><img style="height:100%; width:100%;" class="ml-2 mt-n2" src="'.($answer['results'][$i]['picture']).'"></div>';}
+                echo '
                     <div class="table-responsive col-lg-9">
                         <table class="table user-list">
                             <thead>
@@ -244,22 +247,31 @@ if(isset($_POST['search_motion_picture']))
                                     <td>';
                                           //echo($row[0]);
                                           //echo $response;
-                                          echo $answer['results'][0]['name'];
+                                          if(!is_null($answer['results'][$i])) echo $answer['results'][$i]['name'];
+                                          else echo 'Not found';
                                           echo '
                                     </td>
                                     <td>';
                                     //echo($row[1]);
-                                    echo '<a href="'.($answer['results'][0]['locations'][0]['url']).'">'
-                                    .($answer['results'][0]['locations'][0]['display_name']).'</a>';
+                                    for ($j=0; $j < count($answer['results'][$i]['locations']); $j++) { 
+                                      if(!is_null($answer['results'][$i]['locations'][$j])){
+                                        echo '<a href="'.($answer['results'][$i]['locations'][$j]['url']).'">'
+                                        .($answer['results'][$i]['locations'][$j]['display_name']).'</a><br>';}
+                                      else echo 'Not found';
+                                    }
                                     echo '
                                     </td>
                                     <td>';
-                                    echo '<a href="'.($answer['results'][0]['external_ids']['wiki_data']['url']).'"> Wiki </a>';
+                                    if (!is_null($answer['results'][$i]['external_ids']['wiki_data']))
+                                      {echo '<a href="'.($answer['results'][$i]['external_ids']['wiki_data']['url']).'"> Wiki </a>';}
+                                    else echo 'Wiki';
                                     //echo($row[2]);
                                     echo '
                                     </td>
                                     <td>';
-                                    echo '<a href="'.($answer['results'][0]['external_ids']['imdb']['url']).'"> IMDb </a>';
+                                    if(!is_null($answer['results'][$i]['external_ids'])) if(!is_null($answer['results'][$i]['external_ids']['imdb'])){
+                                    echo '<a href="'.($answer['results'][$i]['external_ids']['imdb']['url']).'"> IMDb </a>';}
+                                    else echo 'IMDb';
                                     echo'</td>
                                     <td style="width: 20%;">
                                     <form name="add_mp" action="" method="post">
@@ -287,7 +299,6 @@ if(isset($_POST['search_motion_picture']))
         </div>
       </div>
     </div>';
-    }
     /*}
     $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM motionpicture, motionpicturecountry, shows 
     WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
@@ -370,6 +381,8 @@ if(isset($_POST['search_motion_picture']))
   {
     echo("Sorry, we couldn't find anything related. Try to search for another movie or show");
   }*/
+    }
+  }
 }
 
 CloseCon($dbConnection);
