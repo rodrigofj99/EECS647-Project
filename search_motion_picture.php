@@ -150,7 +150,7 @@ text-decoration:none;
                                     </div>
                                     <!--end of col-->
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" name="search" type="search" placeholder="Search for movies or tv shows">
+                                        <input class="form-control form-control-lg form-control-borderless" name="search" type="text" placeholder="Search for movies or tv shows">
                                     </div>
                                     <!--end of col-->
                                     <div class="col-auto">
@@ -178,7 +178,7 @@ if(isset($_POST['AddToPlaylist']))
 
 if(isset($_POST['search_motion_picture']))
 {
-  $foundMovies = true;
+  /*$foundMovies = true;
   $foundShows = true;
   $motion_picture_name = $_POST['search'];
   $stmt = $dbConnection->prepare("SELECT Name, Country, Duration, motionpicture.MID FROM motionpicture, motionpicturecountry, movie WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = movie.MID");
@@ -193,10 +193,119 @@ if(isset($_POST['search_motion_picture']))
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result -> fetch_row())
-    {
+    {*/
+      
+  $motion_picture_name = $_POST['search'];
+  $motion_picture_name = str_ireplace(" ","%20", $motion_picture_name);
+  $curl = curl_init();
+  curl_setopt_array($curl, [
+    CURLOPT_URL => "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=$motion_picture_name&country=uk",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_HTTPHEADER => [
+      "x-rapidapi-host: utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+      "x-rapidapi-key: 9aad936645mshe504bd3b5d3bc49p11bf41jsnc6e5a6e31b2f"
+    ],
+  ]);
+  $response = curl_exec($curl);
+  $err = curl_error($curl);
+  curl_close($curl);
+  if ($err) echo "cURL Error #:" . $err;
+  else{ //echo $response;
+    $answer = json_decode($response,true);   
+  echo '<div style="color:white;">';//echo $response;echo'</div>';
   echo '
   <hr>
   <div class="container bootstrap snippets bootdey">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                <div class="row">
+                  <div class="col-lg-3"><img style="height:100%; width:100%;" class="ml-2 mt-n2" src="'.($answer['results'][0]['picture']).'"></div>
+                    <div class="table-responsive col-lg-9">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>Name</span></th>
+                                <th><span>Platform</span></th>
+                                <th><span>Info</span></th>
+                                <th><span>Rating</span></th>
+                                <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>';
+                                          //echo($row[0]);
+                                          //echo $response;
+                                          echo $answer['results'][0]['name'];
+                                          echo '
+                                    </td>
+                                    <td>';
+                                    //echo($row[1]);
+                                    echo '<a href="'.($answer['results'][0]['locations'][0]['url']).'">'
+                                    .($answer['results'][0]['locations'][0]['display_name']).'</a>';
+                                    echo '
+                                    </td>
+                                    <td>';
+                                    echo '<a href="'.($answer['results'][0]['external_ids']['wiki_data']['url']).'"> Wiki </a>';
+                                    //echo($row[2]);
+                                    echo '
+                                    </td>
+                                    <td>';
+                                    echo '<a href="'.($answer['results'][0]['external_ids']['imdb']['url']).'"> IMDb </a>';
+                                    echo'</td>
+                                    <td style="width: 20%;">
+                                    <form name="add_mp" action="" method="post">
+                                      <input type="text" class="invisible" name="mid" value =';
+                                       //echo($row[3]);
+                                      echo '>
+                                      </input>
+                                    <a class="table-link danger">
+                                    <button type="submit" name="AddToPlaylist" class="btn btn-outline-primary">
+                                            <span class="fa-stack">
+                                                Add
+                                            </span>
+                                      </button>
+                                      </a>
+                                    </form>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>';
+    }
+    /*}
+    $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM motionpicture, motionpicturecountry, shows 
+    WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $val = $result->fetch_row();
+    if(!$val)
+    {
+    $foundShows = false;
+    }else
+    {
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result -> fetch_row())
+    {
+    echo '
+    <hr>
+    <div class="container bootstrap snippets bootdey">
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box no-header clearfix">
@@ -207,7 +316,8 @@ if(isset($_POST['search_motion_picture']))
                                 <tr>
                                 <th><span>Name</span></th>
                                 <th><span>Country</span></th>
-                                <th><span>Duration</span></th>
+                                <th><span>Seasons</span></th>
+                                <th><span>Episodes</span></th>
                                 <th>&nbsp;</th>
                                 </tr>
                             </thead>
@@ -225,13 +335,14 @@ if(isset($_POST['search_motion_picture']))
                                     echo($row[2]);
                                     echo '
                                     </td>
-                                    </td>
-                                    <td>
+                                    <td>';
+                                    echo($row[3]);
+                                    echo '
                                     </td>
                                     <td style="width: 20%;">
                                     <form name="add_mp" action="" method="post">
                                       <input type="text" class="invisible" name="mid" value =';
-                                       echo($row[3]);
+                                      echo($row[4]);
                                       echo '>
                                       </input>
                                     <a class="table-link danger">
@@ -251,92 +362,14 @@ if(isset($_POST['search_motion_picture']))
                 </div>
             </div>
         </div>
-    </div>
-  </div>';
-  }
-  }
-  $stmt = $dbConnection->prepare("SELECT Name, Country, Seasons, Episodes, motionpicture.MID FROM motionpicture, motionpicturecountry, shows 
-  WHERE Name LIKE '%$motion_picture_name%' AND motionpicture.MID = motionpicturecountry.MID AND motionpicture.MID = shows.MID");
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $val = $result->fetch_row();
-  if(!$val)
-  {
-  $foundShows = false;
-  }else
-  {
-  $stmt->execute();
-  $result = $stmt->get_result();
-  while ($row = $result -> fetch_row())
-  {
-  echo '
-  <hr>
-  <div class="container bootstrap snippets bootdey">
-  <div class="row">
-      <div class="col-lg-12">
-          <div class="main-box no-header clearfix">
-              <div class="main-box-body clearfix">
-                  <div class="table-responsive">
-                      <table class="table user-list">
-                          <thead>
-                              <tr>
-                              <th><span>Name</span></th>
-                              <th><span>Country</span></th>
-                              <th><span>Seasons</span></th>
-                              <th><span>Episodes</span></th>
-                              <th>&nbsp;</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <td>';
-                                        echo($row[0]);
-                                        echo '
-                                  </td>
-                                  <td>';
-                                  echo($row[1]);
-                                  echo '
-                                  </td>
-                                  <td>';
-                                  echo($row[2]);
-                                  echo '
-                                  </td>
-                                  <td>';
-                                  echo($row[3]);
-                                  echo '
-                                  </td>
-                                  <td style="width: 20%;">
-                                  <form name="add_mp" action="" method="post">
-                                    <input type="text" class="invisible" name="mid" value =';
-                                     echo($row[4]);
-                                    echo '>
-                                    </input>
-                                  <a class="table-link danger">
-                                  <button type="submit" name="AddToPlaylist" class="btn btn-outline-primary">
-                                          <span class="fa-stack">
-                                              Add
-                                          </span>
-                                    </button>
-                                    </a>
-                                  </form>
-                                  </td>
-                              </tr>
-
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
       </div>
-  </div>
-  </div>';
+    </div>';
+    }
   }
-  }
-if(!$foundShows && !$foundMovies)
-{
-echo("Sorry, we couldn't find anything related. Try to search for another movie or show");
-}
-
+  if(!$foundShows && !$foundMovies)
+  {
+    echo("Sorry, we couldn't find anything related. Try to search for another movie or show");
+  }*/
 }
 
 CloseCon($dbConnection);
